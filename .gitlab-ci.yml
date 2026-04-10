@@ -10,4 +10,4 @@ build-job:
 test-job:
   stage: test
   script:
-    - echo "Running tests..."
+    - echo "Testing project..."
