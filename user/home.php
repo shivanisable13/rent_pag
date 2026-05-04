@@ -35,7 +35,7 @@ margin-bottom:30px;
 
     <div class="glass card" style="text-align:center;">
         <h3>📍 Prime Locations</h3>
-        <p style="opacity:0.7;">Near colleges & workplaces</p>
+        <p style="opacity:0.7;">Near colleges </p>
     </div>
 
     <div class="glass card" style="text-align:center;">

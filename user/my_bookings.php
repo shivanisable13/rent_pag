@@ -41,6 +41,27 @@ $bookings = mysqli_query($conn, "
 
     <p>💬 <?php echo $b['message'] ?: 'No message'; ?></p>
 
+    <!-- ✅ ADDED AMOUNT HERE -->
+    <p>💰 Amount: ₹<?php echo $b['amount']; ?></p>
+
+    <?php
+    // ✅ Show Pay Now button ONLY after admin approval
+    if($status == "approved" && isset($b['payment_status']) && $b['payment_status'] == "pending"){
+    ?>
+        <a href="payment.php?booking_id=<?php echo $b['id']; ?>" 
+           style="display:inline-block;margin-top:10px;padding:8px 15px;background:#28a745;color:white;border-radius:5px;text-decoration:none;">
+           
+           Pay Now 💳
+        </a>
+    <?php } ?>
+
+    <?php
+    // ✅ Show payment success
+    if(isset($b['payment_status']) && $b['payment_status'] == "paid"){
+    ?>
+        <p style="color:green;margin-top:10px;">✅ Payment Completed</p>
+    <?php } ?>
+
 </div>
 
 <?php } ?>

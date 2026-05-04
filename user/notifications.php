@@ -2,29 +2,12 @@
 session_start();
 include("../config/db.php");
 
-// ✅ Check login
 if(!isset($_SESSION['user_id'])){
     header("Location: login.php");
     exit();
 }
 
 $user_id = intval($_SESSION['user_id']);
-
-// ✅ Fetch bookings with PG title
-$res = mysqli_query($conn,"
-SELECT b.*, p.title 
-FROM bookings b
-LEFT JOIN properties p ON b.property_id = p.id
-WHERE b.user_id = $user_id
-ORDER BY b.id DESC
-");
-
-// ✅ Mark as read
-mysqli_query($conn,"
-UPDATE bookings 
-SET is_read=1 
-WHERE user_id='$user_id'
-");
 ?>
 
 <link rel="stylesheet" href="../assets/css/style.css">
@@ -41,7 +24,6 @@ WHERE user_id='$user_id'
     margin-bottom:20px;
 }
 
-/* CARD */
 .notify-card {
     background: rgba(255,255,255,0.1);
     padding:15px;
@@ -49,73 +31,108 @@ WHERE user_id='$user_id'
     border-radius:12px;
     backdrop-filter: blur(10px);
     transition:0.3s;
+    cursor:pointer;
 }
 
 .notify-card:hover {
     transform:translateY(-5px);
     box-shadow:0 0 15px rgba(255,255,255,0.2);
 }
-
-/* STATUS COLORS */
-.status {
-    font-weight:bold;
-    margin-top:5px;
-}
 </style>
 
 <div class="container">
-
 <h2 class="title">🔔 My Notifications</h2>
 
-<?php if(mysqli_num_rows($res) > 0){ ?>
+<?php
+// ===============================
+// ✅ 1. BOOKING STATUS (PAYMENT)
+// ===============================
+$bookings = mysqli_query($conn,"
+SELECT b.*, p.title 
+FROM bookings b
+LEFT JOIN properties p ON b.property_id = p.id
+WHERE b.user_id = $user_id
+ORDER BY b.id DESC
+");
 
-    <?php while($row = mysqli_fetch_assoc($res)){ 
+while($b = mysqli_fetch_assoc($bookings)){
+$status = strtolower($b['status']);
+?>
 
-        $status = strtolower($row['status']);
-    ?>
+<div class="notify-card">
 
-    <div class="notify-card">
+<p>
+<?php 
+if($status == 'approved'){
+    echo "✅ Your booking for <b>".$b['title']."</b> is approved!";
+} elseif($status == 'rejected'){
+    echo "❌ Your booking for <b>".$b['title']."</b> is rejected!";
+} else {
+    echo "⏳ Your booking for <b>".$b['title']."</b> is pending...";
+}
+?>
+</p>
 
-        <!-- MESSAGE -->
-        <p>
-        <?php 
-        if($status == 'approved'){
-            echo "✅ Your booking for <span style='color:#8b5cf6;font-weight:bold;'>".$row['title']."</span> has been approved!";
-        } elseif($status == 'rejected'){
-            echo "❌ Your booking for <span style='color:#8b5cf6;font-weight:bold;'>".$row['title']."</span> has been rejected!";
-        } else {
-            echo "⏳ Your booking for <span style='color:#8b5cf6;font-weight:bold;'>".$row['title']."</span> is pending...";
-        }
-        ?>
-        </p>
+<?php if($status == 'approved'){ ?>
 
-        <!-- STATUS -->
-        <p class="status" style="
-        color:
-        <?php 
-            if($status=='approved') echo 'lightgreen';
-            elseif($status=='rejected') echo 'red';
-            else echo 'orange';
-        ?>;
-        ">
-            <?php echo ucfirst($status); ?>
-        </p>
+<p>💰 Amount: ₹<?php echo $b['amount']; ?></p>
 
-        <!-- DATE -->
-        <small>
-            <?php echo date("d M Y, h:i A", strtotime($row['created_at'])); ?>
-        </small>
+<?php if($b['payment_status'] == 'pending'){ ?>
+    <a href="payment.php?booking_id=<?php echo $b['id']; ?>"
+       style="display:inline-block;margin-top:10px;padding:8px 15px;background:#28a745;color:white;border-radius:5px;text-decoration:none;">
+       Pay Now 💳
+    </a>
+<?php } ?>
 
-    </div>
+<?php if($b['payment_status'] == 'paid'){ ?>
+    <p style="color:lightgreen;">✅ Payment Completed</p>
+<?php } ?>
 
-    <?php } ?>
+<?php } ?>
 
-<?php } else { ?>
+</div>
 
-    <!-- EMPTY -->
-    <div style="text-align:center; margin-top:40px;">
-        <h3>No notifications yet </h3>
-    </div>
+<?php } ?>
+
+<?php
+// =======================================
+// ✅ 2. AGREEMENT NOTIFICATIONS (SECURE)
+// =======================================
+$notifications = mysqli_query($conn,"
+SELECT n.*, b.user_id as booking_user 
+FROM notifications n
+LEFT JOIN bookings b ON n.booking_id = b.id
+WHERE n.user_id = $user_id
+ORDER BY n.id DESC
+");
+
+while($n = mysqli_fetch_assoc($notifications)){
+
+// 🔒 SECURITY CHECK
+if($n['booking_user'] != $user_id){
+    continue;
+}
+
+$booking_id = $n['booking_id'];
+$link = "agreement_view.php?booking_id=".$booking_id;
+?>
+
+<a href="<?php echo $link; ?>" style="text-decoration:none;color:white;">
+
+<div class="notify-card">
+
+<p>
+📄 Your PG agreement is ready  
+<span style="color:#4ade80;font-weight:bold;">👉 Click to View Agreement</span>
+</p>
+
+<small>
+<?php echo date("d M Y, h:i A", strtotime($n['created_at'])); ?>
+</small>
+
+</div>
+
+</a>
 
 <?php } ?>
 

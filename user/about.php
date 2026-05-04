@@ -98,7 +98,8 @@
 
 <!-- FEATURES -->
 <div class="section">
-    <h2 style="text-align:center;">Why Choose Us?</h2>
+    <h2 style="text-align:center;">Why Choose Us?</h2> <br>
+
 
     <div class="cards">
         <div class="card glass">

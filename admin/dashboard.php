@@ -66,6 +66,7 @@ $b = mysqli_fetch_assoc($b);
     <a href="bookings.php" class="action-btn">
         📋 View Bookings
     </a>
+    <a href="payments.php" class="action-btn">💳 Payments</a>
     
 
 </div>
