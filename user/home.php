@@ -20,7 +20,7 @@ margin-bottom:30px;
 
     <div style="margin-top:25px;">
         <a href="listing.php">
-            <button>Explore Listings</button>
+            <button>Explore Listing</button>
         </a>
 
         <a href="listing.php">
