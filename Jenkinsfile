@@ -52,7 +52,7 @@ pipeline {
         stage('Import Database') {
             steps {
                 sh '''
-                docker exec -i $DB_CONTAINER mysql -uroot -proot pg_rental < database.sql
+                docker exec -i $DB_CONTAINER mysql -uroot -proot pg_rental < config/database.sql
                 '''
             }
         }
