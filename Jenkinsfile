@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = "shivanisable/pg-booking"
-        CONTAINER_NAME = "pg-app"
+        APP_CONTAINER = "pg-app"
         DB_CONTAINER = "pg-db"
     }
 
@@ -15,10 +15,10 @@ pipeline {
             }
         }
 
-        stage('Stop Old Containers') {
+        stage('Cleanup Old Containers') {
             steps {
                 sh '''
-                docker rm -f $CONTAINER_NAME || true
+                docker rm -f $APP_CONTAINER || true
                 docker rm -f $DB_CONTAINER || true
                 '''
             }
@@ -43,7 +43,21 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Wait for MySQL') {
+            steps {
+                sh 'sleep 20'
+            }
+        }
+
+        stage('Import Database') {
+            steps {
+                sh '''
+                docker exec -i $DB_CONTAINER mysql -uroot -proot pg_rental < database.sql
+                '''
+            }
+        }
+
+        stage('Build App Image') {
             steps {
                 sh 'docker build -t $IMAGE_NAME .'
             }
@@ -53,7 +67,7 @@ pipeline {
             steps {
                 sh '''
                 docker run -d \
-                --name $CONTAINER_NAME \
+                --name $APP_CONTAINER \
                 --network pg-network \
                 -p 80:80 \
                 $IMAGE_NAME
