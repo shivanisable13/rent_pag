@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     environment {
-        IMAGE = "yourdockerhubusername/pg-booking"
+        IMAGE = "shivanisable/pg-booking"
     }
 
     stages {
 
         stage('Clone') {
             steps {
-                git 'https://github.com/your-username/your-repo.git'
+                git 'https://github.com/shivanisable13/rent_pag.git'
             }
         }
 
