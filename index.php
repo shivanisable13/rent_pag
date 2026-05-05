@@ -28,7 +28,7 @@
     <div class="glass card" style="max-width:600px;text-align:center;">
 
         <h1 style="font-size:32px;margin-bottom:15px;">
-            🌟 Find Your Perfect PG Stay
+            🌟 Find Your Perfect PG Stayss
         </h1>
 
         <p style="opacity:0.8;margin-bottom:20px;">
