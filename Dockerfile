@@ -1,7 +1,13 @@
 FROM php:8.2-apache
 
-RUN docker-php-ext-install mysqli
+# Install MySQL extension
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
+# Enable Apache rewrite
+RUN a2enmod rewrite
+
+# Copy your project
 COPY . /var/www/html/
 
-EXPOSE 80
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html
