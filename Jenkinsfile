@@ -2,32 +2,38 @@ pipeline {
     agent any
 
     environment {
-        IMAGE = "shivanisable/pg-booking"
+        IMAGE_NAME = "shivanisable/pg-booking"
     }
 
     stages {
 
-        stage('Build Image') {
+        stage('Clone Code') {
             steps {
-                sh 'docker build -t $IMAGE .'
+                git branch: 'main', url: 'https://github.com/shivanisable13/rent_pag.git'
             }
         }
 
-        stage('Login DockerHub') {
+        stage('Build Docker Image') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'docker-creds',
-                    usernameVariable: 'USER',
-                    passwordVariable: 'PASS'
-                )]) {
-                    sh 'echo $PASS | docker login -u $USER --password-stdin'
-                }
+                sh 'docker build -t $IMAGE_NAME .'
             }
         }
 
-        stage('Push Image') {
+        stage('Stop Old Container') {
             steps {
-                sh 'docker push $IMAGE'
+                sh 'docker rm -f pg-app || true'
+            }
+        }
+
+        stage('Run New Container') {
+            steps {
+                sh '''
+                docker run -d \
+                --name pg-app \
+                --network pg-network \
+                -p 80:80 \
+                $IMAGE_NAME
+                '''
             }
         }
     }
