@@ -3,7 +3,7 @@
 <head>
     <title>Admin - CampusStay</title>
 
-    <link rel="stylesheet" href="/campusstay/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <script src="/campusstay/assets/js/script.js" defer></script>
 </head>
 
