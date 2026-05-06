@@ -19,7 +19,6 @@ pipeline {
             steps {
                 sh '''
                 docker rm -f $APP_CONTAINER || true
-                docker rm -f $DB_CONTAINER || true
                 '''
             }
         }
