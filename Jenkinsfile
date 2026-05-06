@@ -11,11 +11,12 @@ pipeline {
 
         stage('Clone Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/shivanisable13/rent_pag.git'
+                git branch: 'main',
+                url: 'https://github.com/shivanisable13/rent_pag.git'
             }
         }
 
-        stage('Cleanup Old Containers') {
+        stage('Cleanup Old App Container') {
             steps {
                 sh '''
                 docker rm -f $APP_CONTAINER || true
@@ -30,29 +31,15 @@ pipeline {
         }
 
         stage('Start MySQL Container') {
-    steps {
-        sh '''
-        docker start $DB_CONTAINER || docker run -d \
-        --name $DB_CONTAINER \
-        --network pg-network \
-        -v pgdata:/var/lib/mysql \
-        -e MYSQL_ROOT_PASSWORD=root \
-        -e MYSQL_DATABASE=pg_rental \
-        mysql:5.7
-        '''
-    }
-}
-
-        stage('Wait for MySQL') {
-            steps {
-                sh 'sleep 20'
-            }
-        }
-
-        stage('Import Database') {
             steps {
                 sh '''
-                docker exec -i $DB_CONTAINER mysql -uroot -proot pg_rental < config/database.sql
+                docker start $DB_CONTAINER || docker run -d \
+                --name $DB_CONTAINER \
+                --network pg-network \
+                -v pgdata:/var/lib/mysql \
+                -e MYSQL_ROOT_PASSWORD=root \
+                -e MYSQL_DATABASE=pg_rental \
+                mysql:5.7
                 '''
             }
         }
