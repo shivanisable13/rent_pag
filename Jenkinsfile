@@ -29,18 +29,19 @@ pipeline {
             }
         }
 
-        stage('Run MySQL') {
-            steps {
-                sh '''
-                docker run -d \
-                --name $DB_CONTAINER \
-                --network pg-network \
-                -e MYSQL_ROOT_PASSWORD=root \
-                -e MYSQL_DATABASE=pg_rental \
-                mysql:5.7
-                '''
-            }
-        }
+        stage('Start MySQL Container') {
+    steps {
+        sh '''
+        docker start $DB_CONTAINER || docker run -d \
+        --name $DB_CONTAINER \
+        --network pg-network \
+        -v pgdata:/var/lib/mysql \
+        -e MYSQL_ROOT_PASSWORD=root \
+        -e MYSQL_DATABASE=pg_rental \
+        mysql:5.7
+        '''
+    }
+}
 
         stage('Wait for MySQL') {
             steps {
