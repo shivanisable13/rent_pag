@@ -26,7 +26,7 @@ $user_name = $_SESSION['user_name'] ?? 'User';
 
 <a href="/user/listing.php"><button>Listings</button></a>
 
-        <a href="/campusstay/user/listing.php"><button>Listings</button></a>
+        <a href="/user/about.php"><button>About</button></a>
 
         <a href="notifications.php">
             <button>Notifications</button>
