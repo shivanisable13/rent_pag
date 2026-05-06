@@ -12,7 +12,7 @@ padding:60px;
 margin-bottom:30px;
 ">
 
-    <h1 style="font-size:38px;">Find Your Perfect Stay 🏡</h1>
+    <h1 style="font-size:38px;">Find Your Perfect STAY 🏡</h1>
 
     <p style="opacity:0.7; margin-top:10px;">
         Discover premium PGs for boys & girls with modern amenities
