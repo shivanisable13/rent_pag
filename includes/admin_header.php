@@ -16,7 +16,7 @@
 
        
 
-        <a href="/user/logout.php">Logout</a>
+        <a href="/user/logout.php">
 
             <button>Logout</button>
         </a>
