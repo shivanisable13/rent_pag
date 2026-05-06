@@ -36,7 +36,7 @@ while($row = mysqli_fetch_assoc($images)){
 
 <div class="glass">
 
-<img id="mainImage" src="../uploads/<?php echo $data['image']; ?>" 
+<img id="mainImage" src="/uploads/<?php echo $data['image']; ?>" 
 style="width:100%;border-radius:15px; cursor:pointer;"
 onclick="openImage(this.src)">
 
@@ -49,7 +49,7 @@ onclick="openImage(this.src)">
 
 <div style="display:flex; gap:10px; overflow-x:auto;">
 <?php foreach($imageList as $img){ ?>
-<img src="../uploads/<?php echo $img['image']; ?>" class="thumbnail" onclick="changeImage(this)">
+<img src="/uploads/<?php echo $img['image']; ?>" class="thumbnail" onclick="changeImage(this)">
 <?php } ?>
 </div>
 
