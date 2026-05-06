@@ -10,8 +10,8 @@ $user_name = $_SESSION['user_name'] ?? 'User';
 <head>
     <title>CampusStay</title>
 
-    <link rel="stylesheet" href="/campusstay/assets/css/style.css">
-    <script src="/campusstay/assets/js/script.js" defer></script>
+   <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="/assets/js/script.js" defer></script>
 </head>
 
 <body>
@@ -22,11 +22,9 @@ $user_name = $_SESSION['user_name'] ?? 'User';
 
     <div style="display:flex;align-items:center;gap:10px;">
 
-        <a href="/campusstay/user/home.php"><button>Home</button></a>
+        <a href="/user/home.php"><button>Home</button></a>
 
-        <a href="about.php">
-            <button>About Us</button>
-        </a>
+<a href="/user/listing.php"><button>Listings</button></a>
 
         <a href="/campusstay/user/listing.php"><button>Listings</button></a>
 
@@ -44,7 +42,7 @@ $user_name = $_SESSION['user_name'] ?? 'User';
                 <p>Welcome <b><?php echo htmlspecialchars($user_name); ?></b></p>
                 <hr>
 
-                <a href="/campusstay/user/logout.php">Logout</a>
+                <a href="/user/logout.php">Logout</a>
             </div>
         </div>
 
