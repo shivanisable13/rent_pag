@@ -51,15 +51,16 @@ pipeline {
         }
 
         stage('Run App Container') {
-            steps {
-                sh '''
-                docker run -d \
-                --name $APP_CONTAINER \
-                --network pg-network \
-                -p 80:80 \
-                $IMAGE_NAME
-                '''
-            }
-        }
+    steps {
+        sh '''
+        docker run -d \
+        --name $APP_CONTAINER \
+        --network pg-network \
+        -v pguploads:/var/www/html/uploads \
+        -p 80:80 \
+        $IMAGE_NAME
+        '''
+    }
+}
     }
 }
