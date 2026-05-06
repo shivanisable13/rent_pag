@@ -176,7 +176,7 @@ function closeImage(){
 
 let images = [];
 <?php foreach($imageList as $img){ ?>
-images.push("../uploads/<?php echo $img['image']; ?>");
+images.push("/uploads/<?php echo $img['image']; ?>");
 <?php } ?>
 
 let index = 0;
