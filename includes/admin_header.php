@@ -16,7 +16,8 @@
 
        
 
-        <a href="/campusstay/user/logout.php">
+        <a href="/user/logout.php">Logout</a>
+
             <button>Logout</button>
         </a>
 
